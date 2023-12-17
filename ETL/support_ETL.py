@@ -44,8 +44,6 @@ def exploracion_dataframe(dataframe):
     for col in dataframe_numericas.columns:
         print(f"La columna {col} tiene las siguientes valore únicos:")
         display(pd.DataFrame(dataframe[col].value_counts()))
-# %%
-# Country todos Spain
 
 #%%
 #CAMBIAR COLUMNAS DE PRODUCTOS
@@ -53,6 +51,29 @@ def cambiar_columnas(df, lista_columnas):
     keys = df.columns.tolist()
     diccionario_columnas = dict(zip(keys,lista_columnas))
     df.rename(columns = diccionario_columnas, inplace = True)
-
+    return df
 
 # %%
+
+def columnas_cat(dataframe):
+    dataframe["country"] = dataframe["country"].fillna("Spain")
+    lista_columnas = ["email", "gender", "city", "address"]
+    for col in lista_columnas:
+        dataframe[col] = dataframe[col].fillna("Unknown")
+    return dataframe
+
+#%%
+def col_minuscula(dataframe):
+    nuevas_columnas = {columna: columna.lower()for columna in dataframe}
+    dataframe.rename(columns=nuevas_columnas, inplace = True)
+    return dataframe
+
+#%%
+def mergear(dataframe1, dataframe2, dataframe3):
+    df = pd.merge(pd.merge(dataframe1,dataframe2,left_on='id', right_on = "id_cliente"),dataframe3,left_on='id_producto', right_on = "id")
+    df.drop(columns=["id_x","id_y"], axis=[1],inplace=True)
+    return df
+
+#%%
+def guardar_df(dataframe, nombre):
+    dataframe.to_csv(nombre)

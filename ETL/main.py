@@ -12,9 +12,24 @@ for archivo in lista_archivos:
     print(nombre.upper())
     sup.exploracion_dataframe(dicc[nombre])
     print("___________________________")
+
+#%%
+for key in dicc.keys():
+    sup.col_minuscula(dicc[key])
+
 # %%
 df_productos= dicc["productos"].reset_index()
-new_keys = ['ID', 'Nombre_Producto', 'Categoría', 'Precio', 'Origen', 'Descripción', 'Descripción 2']
+new_keys = ['id', 'nombre_producto', 'categoría', 'precio', 'origen', 'descripción', 'descripción 2']
 sup.cambiar_columnas(df_productos, new_keys)
 
 # %%
+df_clientes = dicc["clientes"]
+df_ventas = dicc["ventas"]
+sup.columnas_cat(df_clientes)
+
+df_productos["descripción 2"] = df_productos["descripción 2"].fillna("Unknown")
+
+# %%
+df = sup.mergear(df_clientes,df_ventas,df_productos)
+# %%
+sup.guardar_df(df, "csv_final")
